@@ -1,3 +1,19 @@
+/*
+    tictactoe.cpp
+    
+    
+	Author(s): Parth Mishra
+	
+	Group Name: Team Forever Alone :(
+	
+	This is a implementation of the popular game "Tic Tac Toe"
+	in which players attempt to line up 3 X's or O's on a 3x3
+	grid.
+	
+*/	
+	
+
+
 #include <iostream>
 
 
@@ -42,9 +58,7 @@ bool symbol( int player, int selection ) {
 	
 	char symbol;
 	
-	// move validity
-	bool valid = false;
-	
+		
 	// determines symbol to be used based on the current player number
 	if ( player == 1 )
 	{
@@ -56,110 +70,72 @@ bool symbol( int player, int selection ) {
 	}
 	
 	
-	// find the selected cell and check if it's a valid place to put
-	// a the proper symbol
+	// find the selected cell and see if it's already occupied, if not
+	// mark the cell
 	
-	if ( selection == 1 && cells[1] == '1' )
-	{
-			cells[1] = symbol;
-			valid = true;
-	}
-	else if ( selection == 2 && cells[2] == '2' )
-	{
-			cells[2] = symbol;
-			valid = true;
-	}
-	else if ( selection == 3 && cells[3] == '3' )
-	{
-			cells[3] = symbol;
-			valid = true;
-	}
-	else if ( selection == 4 && cells[4] == '4' )
-	{
-			cells[4] = symbol;
-			valid = true;
-	}
-	else if ( selection == 5 && cells[5] == '5' )
-	{
-			cells[5] = symbol;
-			valid = true;
-	}
-	else if ( selection == 6 && cells[6] == '6' )
-	{
-			cells[6] = symbol;
-			valid = true;
-	}
-	else if ( selection == 7 && cells[7] == '7' )
-	{
-			cells[7] = symbol;
-			valid = true;
-	}
-	else if ( selection == 8 && cells[8] == '8' )
-	{
-			cells[8] = symbol;
-			valid = true;
-	}
-	else if ( selection == 9 && cells[9] == '9' )
-	{
-			cells[9] = symbol;
-			valid = true;
-	}
-	else
-	{
-		valid = false;
-	}
-	
-	return valid;
+	if ( cells[selection] != 'X' && cells[selection] != 'O')
+    {
+        cells[selection] = symbol;
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+	//return false;
 	
 }
  
 int result() {
 	
-	// These are all the possible winning combinations, if any of these
-	// are satisfied, then it's a win
-	if ( cells[1] == cells[2] && cells[2] == cells[3] )
-	{
-		return WIN;
-	} 
-	else if ( cells[4] == cells[5] && cells[5] == cells[6] ) 
-	{
-		return WIN;
-	}
-	else if ( cells[7] == cells[8] && cells[8] == cells[9] )
-	{
-		return WIN;
-	}
-	else if ( cells[1] == cells[4] && cells[4] == cells[7] )
-	{
-		return WIN;
-	}
-	else if ( cells[2] == cells[5] && cells[5] == cells[8] )
-	{
-		return WIN;
-	}
-	else if ( cells[3] == cells[6] && cells[6] == cells[9] )
-	{
-		return WIN;
-	}
-	else if ( cells[1] == cells[5] && cells[5] == cells[9] )
-	{
-		return WIN;
-	}
-	else if ( cells[3] == cells[5] && cells[5] == cells[7] )
-	{
-		return WIN;
-	}
-	// check for a draw in which every cell is occupied yet none of the possible winning combinations exist
-	else if ( cells[1] != '1' && cells[2] != '2' && cells[3] != '3' && cells[4] != '4'
+	// size of our array that holds all winning combos
+    const size_t SIZE = 24;
+    
+    
+    // An array that holds all winning varaibles,
+    // Each line is a winning combination in the grid
+    int winningCombos[24] ={1, 2, 3,
+                            4, 5, 6,
+                            7, 8, 9,
+                            1, 4, 7,
+                            2, 5, 8,
+                            3, 6, 9,
+                            1, 5, 9,
+                            3, 5, 7};
+    
+    // This will loop through the willing combo's array and check if
+    // if there is a winning combination in the grid
+    
+    // For example if there is a X on 1 2 and 3 it would find the combination
+    // on the first go around. If it doesn't find a winning combo on the first loop
+    // it will increase the index by 3 (i.e move to the next winning combination)
+    for ( size_t i = 0; i != SIZE; i += 3 )
+    {
+        if (cells[winningCombos[i]] == cells[winningCombos[i+1]] && cells[winningCombos[i+1]] == cells[winningCombos[i+2]])
+        {
+           
+            return WIN;
+            
+        }
+        
+    }
+    
+    // check for draw
+    if ( cells[1] != '1' && cells[2] != '2' && cells[3] != '3' && cells[4] != '4'
      && cells[5] != '5' && cells[6] != '6' && cells[7] != '7' && cells[8] != '8' && cells[9] != '9' )
 	{
 		return DRAW;
 	}
-	// if it's neither a win nor a draw, then it's still in progress
 	else
 	{
 		return IN_PROGRESS;
 	}
+	
+	
+	
+ 
 }
 
 void reset() {
